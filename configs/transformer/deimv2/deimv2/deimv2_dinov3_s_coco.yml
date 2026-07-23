@@ -58,8 +58,8 @@ no_aug_epoch: 12
 
 train_dataloader:
   dataset:
-    img_folder: /data/students/g11316019/deimv2_data/train/images
-    ann_file: /data/students/g11316019/deimv2_data/annotations/train.json
+    img_folder: /path/to/project/deimv2_data/train/images
+    ann_file: /path/to/project/deimv2_data/annotations/train.json
     transforms:
       ops:
         - {type: Mosaic, output_size: 320, rotation_range: 10, translation_range: [0.1, 0.1], scaling_range: [0.5, 1.5], probability: 1.0, fill_value: 0, use_cache: True, max_cached_images: 50, random_pop: True}
@@ -87,8 +87,8 @@ train_dataloader:
 
 val_dataloader:
   dataset:
-    img_folder: /data/students/g11316019/deimv2_data/val/images
-    ann_file: /data/students/g11316019/deimv2_data/annotations/val.json
+    img_folder: /path/to/project/deimv2_data/val/images
+    ann_file: /path/to/project/deimv2_data/annotations/val.json
     transforms:
       ops:
         - {type: Resize, size: [640, 640]}

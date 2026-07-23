@@ -15,8 +15,8 @@ eval_spatial_size: [1280, 1280]
 
 train_dataloader:
   dataset:
-    img_folder: /data/students/g11316019/dfine_fisheye/images/train_stage1_plus
-    ann_file: /data/students/g11316019/dfine_fisheye/annotations/train_stage1_plus_0base.json
+    img_folder: /path/to/project/dfine_fisheye/images/train_stage1_plus
+    ann_file: /path/to/project/dfine_fisheye/annotations/train_stage1_plus_0base.json
     transforms:
       policy:
         epoch: 50
@@ -27,8 +27,8 @@ train_dataloader:
 
 val_dataloader:
   dataset:
-    img_folder: /data/students/g11316019/dfine_fisheye/images/val
-    ann_file: /data/students/g11316019/dfine_fisheye/annotations/val_fisheye_0base.json
+    img_folder: /path/to/project/dfine_fisheye/images/val
+    ann_file: /path/to/project/dfine_fisheye/annotations/val_fisheye_0base.json
 
 DFINE:
   backbone: HGNetv2

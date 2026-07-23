@@ -1,133 +1,135 @@
+import argparse
+import json
 import os
+import time
+from pathlib import Path
+
 import cv2
 import numpy as np
-import time
-import json
 import torch
-import argparse
 from ultralytics import YOLO
 from utils.datasets import letterbox
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="YOLOv10 inference (single model)")
-    parser.add_argument('--image_folder', type=str, required=True)
-    parser.add_argument('--output_dir', type=str, default='./output')
-    parser.add_argument('--yolov10_model', type=str, required=True)
-    parser.add_argument('--img_size', type=int, default=1280)
-    parser.add_argument('--device', type=str, default='cuda:0')
-    parser.add_argument('--yolov10_conf', type=float, default=0.7)
-    parser.add_argument('--yolov10_iou', type=float, default=0.45)
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="YOLOv10-X inference for FishEye1K_eval")
+    parser.add_argument("--image_folder", type=str, required=True)
+    parser.add_argument("--yolov10_model", type=str, required=True)
+    parser.add_argument("--output", type=str, default=None, help="Exact output JSON path")
+    parser.add_argument("--output_dir", type=str, default="./output")
+    parser.add_argument("--img_size", type=int, default=1280, choices=[1280, 1536])
+    parser.add_argument("--device", type=str, default="cuda:0")
+    parser.add_argument("--yolov10_conf", type=float, default=0.50)
+    parser.add_argument("--yolov10_iou", type=float, default=0.65)
     return parser.parse_args()
 
-def get_image_id(img_name):
-    img_name = img_name.split('.')[0]
-    scene_list = ['M', 'A', 'E', 'N']
-    camera_indx = int(img_name.split('_')[0].replace('camera', ''))
-    scene_indx = scene_list.index(img_name.split('_')[1])
-    frame_indx = int(img_name.split('_')[2])
-    return int(f"{camera_indx}{scene_indx}{frame_indx}")
 
-def preprocess_image(image, img_size):
+def get_image_id(img_name: str) -> int:
+    stem = Path(img_name).stem
+    camera, scene, frame = stem.split("_")
+    scene_list = ["M", "A", "E", "N"]
+    camera_idx = int(camera.replace("camera", ""))
+    scene_idx = scene_list.index(scene)
+    frame_idx = int(frame)
+    return int(f"{camera_idx}{scene_idx}{frame_idx}")
+
+
+def preprocess_image(image: np.ndarray, img_size: int):
     img, ratio, pad = letterbox(image, new_shape=img_size, auto=False)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
-    img = img.transpose(2, 0, 1)
-    img = np.ascontiguousarray(img)
+    img = np.ascontiguousarray(img.transpose(2, 0, 1))
     return img, ratio, pad
 
+
 def scale_coords(coords, img0_shape, ratio, pad):
-    coords = np.array(coords)
+    coords = np.asarray(coords, dtype=np.float32)
     coords[:, [0, 2]] = (coords[:, [0, 2]] - pad[0]) / ratio[0]
     coords[:, [1, 3]] = (coords[:, [1, 3]] - pad[1]) / ratio[1]
     coords[:, [0, 2]] = np.clip(coords[:, [0, 2]], 0, img0_shape[1])
     coords[:, [1, 3]] = np.clip(coords[:, [1, 3]], 0, img0_shape[0])
     return coords.round().tolist()
 
-def postprocess_yolov10(results, img_shape, img_size, conf_thres, ratio, pad):
+
+def postprocess_yolov10(results, img_shape, conf_thres, ratio, pad):
     boxes, scores, classes = [], [], []
-    for r in results:
-        for box, conf, cls in zip(r.boxes.xyxy, r.boxes.conf, r.boxes.cls):
-            if conf >= conf_thres:
-                xyxy = box.cpu().numpy()
-                boxes.append(xyxy)
+    for result in results:
+        for box, conf, cls in zip(result.boxes.xyxy, result.boxes.conf, result.boxes.cls):
+            if float(conf) >= conf_thres:
+                boxes.append(box.cpu().numpy())
                 scores.append(float(conf.cpu()))
                 classes.append(int(cls.cpu()))
     if boxes:
         boxes = scale_coords(boxes, img_shape, ratio, pad)
     return boxes, scores, classes
 
-def main():
+
+def main() -> None:
     args = parse_args()
-    os.makedirs(args.output_dir, exist_ok=True)
-    device = torch.device(args.device)
     model = YOLO(args.yolov10_model)
+
+    image_files = sorted(
+        os.path.join(root, filename)
+        for root, _, files in os.walk(args.image_folder)
+        for filename in files
+        if filename.lower().endswith((".jpg", ".jpeg", ".png"))
+    )
+    if not image_files:
+        raise FileNotFoundError(f"No evaluation images found under {args.image_folder}")
+
     submission = []
-    sum_time = 0
-    max_fps = 25
-
-    # Gather images
-    image_files = []
-    for root, _, files in os.walk(args.image_folder):
-        for file in files:
-            if file.endswith(('.jpg', '.png')):
-                image_files.append(os.path.join(root, file))
-
-    image_files.sort()
-
-    print(f"Found {len(image_files)} images")
+    elapsed_ms = 0.0
 
     for img_path in image_files:
-        img = cv2.imread(img_path)
-        if img is None:
-            print(f"Failed to load {img_path}")
-            continue
-        img_shape = img.shape[:2]
+        image = cv2.imread(img_path)
+        if image is None:
+            raise RuntimeError(f"Failed to read image: {img_path}")
+
+        img_shape = image.shape[:2]
         image_id = get_image_id(os.path.basename(img_path))
+        processed, ratio, pad = preprocess_image(image, args.img_size)
+        tensor = torch.from_numpy(processed).unsqueeze(0).to(args.device)
 
-        # Preprocess
-        img_processed, ratio, pad = preprocess_image(img, args.img_size)
-        img_tensor = torch.from_numpy(img_processed).unsqueeze(0).to(device)
-
-        # Timing starts
-        t0 = time.time()
+        start = time.perf_counter()
         results = model.predict(
-            img_tensor, imgsz=args.img_size, conf=args.yolov10_conf,
-            iou=args.yolov10_iou, verbose=False
+            tensor,
+            imgsz=args.img_size,
+            conf=args.yolov10_conf,
+            iou=args.yolov10_iou,
+            device=args.device,
+            verbose=False,
         )
-        t1 = time.time()
+        elapsed_ms += (time.perf_counter() - start) * 1000.0
 
         boxes, scores, classes = postprocess_yolov10(
-            results, img_shape, args.img_size, args.yolov10_conf, ratio, pad
+            results, img_shape, args.yolov10_conf, ratio, pad
         )
-
-        for box, score, cls in zip(boxes, scores, classes):
+        for box, score, class_id in zip(boxes, scores, classes):
             x1, y1, x2, y2 = box
-            submission.append({
-                "image_id": image_id,
-                "category_id": int(cls),
-                "bbox": [float(x1), float(y1), float(x2 - x1), float(y2 - y1)],
-                "score": float(score)
-            })
+            submission.append(
+                {
+                    "image_id": image_id,
+                    "category_id": class_id,
+                    "bbox": [float(x1), float(y1), float(x2 - x1), float(y2 - y1)],
+                    "score": score,
+                }
+            )
 
-        sum_time += (t1 - t0) * 1000  # ms
+    fps = 1000.0 * len(image_files) / elapsed_ms
+    print(f"Processed {len(image_files)} images in {elapsed_ms / 1000.0:.2f}s")
+    print(f"FPS: {fps:.2f}; normalized FPS: {min(fps, 25.0) / 25.0:.4f}")
 
-    if sum_time > 0:
-        fps = 1000 * len(image_files) / sum_time
-        print(f"FPS: {fps:.2f}")
+    if args.output:
+        output_path = Path(args.output)
     else:
-        print("No images processed; cannot compute FPS.")
+        output_path = Path(args.output_dir) / (
+            f"infer_Y10_yolov10x_{args.img_size}_"
+            f"c{args.yolov10_conf:.3f}_i{args.yolov10_iou:.3f}.json"
+        )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as file:
+        json.dump(submission, file, ensure_ascii=False)
+    print(f"Saved submission to {output_path}")
 
-    norm_fps = min(fps, max_fps) / max_fps
-
-    print(f"Processed {len(image_files)} images in {sum_time/1000:.2f} sec")
-    print(f"FPS: {fps:.2f}")
-    print(f"Normalized FPS: {norm_fps:.4f}")
-
-    out_path = os.path.join(args.output_dir, f"infer_Y10_yolov10x_vfp_train4_1280_best_{int(args.yolov10_conf*100)}_{int(args.yolov10_iou*100)}.json")
-
-    with open(out_path, 'w') as f:
-        json.dump(submission, f, indent=2)
-    print(f"Saved submission to {out_path}")
 
 if __name__ == "__main__":
     main()
-

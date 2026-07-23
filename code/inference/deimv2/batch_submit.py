@@ -15,7 +15,7 @@ from engine.core import YAMLConfig
 
 CONFIG = "configs/deimv2/deimv2_dinov3_s_fisheye.yml"
 WEIGHT = "outputs/deimv2_dinov3_s_fisheye_batch2_832_amp_200e/best_stg2.pth"
-IMG_DIR = "/data/datasets/fisheye_test/images"
+IMG_DIR = "/path/to/FishEye1K_eval/images"
 
 OUT_JSON = "submission_deimv2_832_conf060_iou038.json"
 

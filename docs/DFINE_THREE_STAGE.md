@@ -21,4 +21,24 @@ AMP: enabled
 EMA: enabled
 ```
 
-The exact original shell commands must be recovered from shell history, logs, or training records before the public release.
+## Configuration files
+
+```text
+configs/transformer/dfine/dfine/custom/objects365/dfine_hgnetv2_l_fisheye_1280.yml
+configs/transformer/dfine/dfine/custom/objects365/dfine_hgnetv2_l_fisheye_1440_v1.yml
+configs/transformer/dfine/dfine/custom/objects365/dfine_hgnetv2_l_fisheye_1536_v1.yml
+```
+
+## Command wrappers
+
+The repository provides:
+
+```text
+scripts/training/train_dfine_stage1_1280.sh
+scripts/training/train_dfine_stage2_1440.sh
+scripts/training/train_dfine_stage3_1536.sh
+```
+
+The wrappers use the upstream D-FINE tuning interface (`-t checkpoint.pth`). Before execution, set the checkpoint and repository paths in the environment variables shown inside each script.
+
+The wrappers reproduce the documented stage transitions. GPU count, master port, and seed can be adjusted to match the local environment.

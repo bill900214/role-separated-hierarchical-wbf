@@ -9,5 +9,4 @@ authors:
     given-names: "Chun-Ming"
 version: 0.1.0
 date-released: 2026-07-23
-repository-code: "REPLACE_WITH_PUBLIC_GITHUB_URL"
-license: "NOASSERTION"
+repository-code: "https://github.com/bill900214/role-separated-hierarchical-wbf"

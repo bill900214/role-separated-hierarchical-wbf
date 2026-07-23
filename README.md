@@ -3,7 +3,7 @@
 Official research repository for:
 
 > **Role-Separated Hierarchical WBF for Multi-Scale YOLO–Transformer Fusion in Fisheye Road Object Detection**  
-> Ding-Jun Huang
+> Ding-Jun Huang and Chun-Ming Tsai  
 > Department of Computer Science, University of Taipei, Taipei, Taiwan
 
 ## Overview
@@ -29,11 +29,11 @@ The pipeline separates three fusion roles:
 
 A dataset-specific Day/Night Class-Wise Confidence Thresholding step is applied to the YOLO main branch before Level III WBF.
 
-## Important Scope Statement
+## Scope and Checkpoint Provenance
 
-The YOLOR-D6, YOLOv10-X, and YOLOv13-L checkpoints are publicly released UT-T1 checkpoints. This work does **not** claim their original training as a contribution. The contributions here are multi-scale inference, output-format unification, hierarchical WBF, day/night class-wise thresholding, Transformer fine-tuning, and controlled ablation.
+The YOLOR-D6, YOLOv10-X, and YOLOv13-L checkpoints are publicly released UT-T1 checkpoints. Their original training is not claimed as a contribution of this work. The repository documents the multi-scale inference, output-format unification, hierarchical WBF, Day/Night class-wise thresholding, Transformer fine-tuning, and controlled ablation used in this study.
 
-The reported evaluation uses the 1,000-image FishEye1K_eval set. Its reference annotations remain hidden on the official evaluation server. The repository therefore provides prediction JSON files and server-returned metrics, but not hidden ground-truth annotations.
+The reported evaluation uses the 1,000-image FishEye1K_eval set. Its reference annotations remain hidden on the official evaluation server. This repository therefore provides prediction JSON files and server-returned metrics, but not hidden ground-truth annotations.
 
 ## Final Configuration
 
@@ -95,7 +95,7 @@ Maximum detections per image: 300
 | Multi-scale YOLO | 0.6596 | 0.6123 | — | 0.4665 | — | — |
 | Final MSDNL | **0.6604** | **0.6147** | **0.8220** | **0.4709** | **0.7378** | **0.6214** |
 
-All reported values were returned by the official AI City Challenge evaluation platform for the same FishEye1K_eval submission protocol.
+All reported values were returned by the official AI City Challenge evaluation platform under the same FishEye1K_eval submission protocol.
 
 ## Repository Structure
 
@@ -104,73 +104,57 @@ All reported values were returned by the official AI City Challenge evaluation p
 ├── README.md
 ├── CITATION.cff
 ├── .gitignore
+├── checkpoints/
+├── code/
+│   ├── data_tools/
+│   ├── fusion/
+│   └── inference/
 ├── configs/
-│   └── fusion/final_msdnl.yaml
+│   ├── fusion/
+│   └── transformer/
+├── docs/
 ├── fusion/
-│   └── day_night_classwise_threshold.py
 ├── legacy/
-│   └── wbf_fuse_results_original_found.py
-├── scripts/
-│   ├── training/
-│   ├── inference/
-│   └── fusion/
 ├── predictions/
 │   ├── yolo_inputs/
 │   ├── transformer_inputs/
 │   ├── intermediate/
 │   └── final/
 ├── results/
-├── checkpoints/
-├── docs/
+├── scripts/
+│   ├── training/
+│   └── inference/
 └── third_party/
 ```
 
-## Installation
+## Documentation
 
-The original detectors use separate upstream repositories and environments. See:
-
-- `docs/YOLO_MULTISCALE.md`
-- `docs/DFINE_THREE_STAGE.md`
-- `docs/DEIMV2.md`
-- `third_party/README.md`
-
-The final JSON conversion and fusion environment used Python 3.11 with PyTorch 2.5.1, torchvision 0.20.1, NumPy 2.4.3, OpenCV 4.13.0.92, and Pillow 12.1.1.
+- `docs/YOLO_MULTISCALE.md`: YOLO multi-scale inference and commands.
+- `docs/DFINE_THREE_STAGE.md`: D-FINE three-stage fine-tuning.
+- `docs/DEIMV2.md`: DEIMv2 auxiliary branches and release scope.
+- `docs/EVALUATION.md`: hidden-test evaluation protocol.
+- `docs/PATH_CONFIGURATION.md`: dataset and checkpoint path configuration.
 
 ## Prediction Files
 
-The recommended public files include:
+The final official-platform submission is:
 
 ```text
-predictions/yolo_inputs/
-predictions/transformer_inputs/
-predictions/intermediate/
 predictions/final/FINAL_MSDN_L_EC2.json
 ```
 
-The final JSON contains model predictions only. It does not contain hidden ground-truth annotations.
+The file contains model predictions only and does not contain hidden ground-truth annotations. Its checksum is stored alongside it in `FINAL_MSDN_L_EC2.sha256`.
 
-## Reproducibility Status
+## Reproducibility Notes
 
-The repository provides:
+The repository provides fixed input JSON files, intermediate outputs, the final server-submission JSON, final fusion parameters, Day/Night threshold code, model configuration files, and command wrappers.
 
-- fixed prediction JSON inputs;
-- intermediate JSON outputs;
-- final server-submission JSON;
-- final WBF configuration;
-- day/night threshold implementation;
-- model/checkpoint inventory and checksums where available.
-
-Items still requiring verification before a public release:
-
-- exact DEIMv2-S-960 checkpoint filename and SHA-256;
-- exact upstream commit hashes;
-- exact original shell commands for every training/inference stage;
-- final license compatibility review.
+The DEIMv2-S-960 prediction JSON used by the final fusion is released. The original DEIMv2-S-960 checkpoint filename was not preserved in the collected experiment archive and is therefore not claimed as redistributed here.
 
 ## Citation
 
 See `CITATION.cff`.
 
-## License
+## Licensing
 
-A final repository license should be selected only after checking the licenses of all included third-party files. Original code written specifically for this project may be licensed separately from upstream-derived code.
+This repository contains original project code and adapted files derived from multiple upstream projects. Consult `third_party/README.md` and each upstream license before redistribution or reuse.
