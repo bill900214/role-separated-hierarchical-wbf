@@ -3,7 +3,7 @@
 Official research repository for:
 
 > **Role-Separated Hierarchical WBF for Multi-Scale YOLO–Transformer Fusion in Fisheye Road Object Detection**  
-> Ding-Jun Huang and Chun-Ming Tsai  
+> Ding-Jun Huang
 > Department of Computer Science, University of Taipei, Taipei, Taiwan
 
 ## Overview
