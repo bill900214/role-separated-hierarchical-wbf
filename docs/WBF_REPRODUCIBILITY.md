@@ -14,9 +14,9 @@ It is preserved at:
 legacy/wbf_fuse_results_original_found.py
 ```
 
-The precise original MMDetection/MMEngine package versions were not preserved in the collected archive.
+The precise original MMDetection and MMEngine package versions were not retained in the collected experiment archive.
 
-## Portable Helper
+## Portable Inspection Helper
 
 The standalone comparison helper is:
 
@@ -24,35 +24,34 @@ The standalone comparison helper is:
 code/fusion/wbf_portable_helper.py
 ```
 
-A compatibility entry point remains at:
-
-```text
-code/fusion/wbf_fuse_official.py
-```
-
-Despite the historical filename, the compatibility entry point is **not** the original MMDetection implementation.
+This helper is not the original MMDetection implementation.
 
 ## Verified Portable Scope
 
-- The Day/Night class-wise stage exactly reconstructs `MSDN_L_SEC_MS3_DN.json`.
-- YOLOv13-L Level-I same-model multi-scale fusion can be reconstructed from the retained JSON inputs.
-- YOLOv10-X Level-I reconstruction matches the retained artifact when compared at five decimal places; differences near `1e-6` may occur across numerical environments.
+- Day/Night class-wise thresholding exactly reconstructs `MSDN_L_SEC_MS3_DN.json`.
+- YOLOv13-L Level-I same-model multi-scale fusion is verified from retained JSON inputs.
+- YOLOv10-X Level-I reconstruction matches the retained artifact with numerical tolerance near `1e-6`.
 
-Run:
+Optional Level-I check:
 
 ```bash
 export PROJECT_ROOT=/path/to/role-separated-hierarchical-wbf
 export EVAL_IMAGES=/path/to/FishEye1K_eval/images
-
 bash scripts/fusion/reproduce_level1.sh
+```
+
+Exact Day/Night check:
+
+```bash
+export PROJECT_ROOT=/path/to/role-separated-hierarchical-wbf
 bash scripts/fusion/reproduce_day_night.sh
 ```
 
-## Level-II and Level-III Scope
+## Level-II and Level-III Boundary
 
 The portable helper is not claimed to reconstruct the original Level-II or Level-III outputs bit-for-bit.
 
-The authoritative archival artifacts are:
+Authoritative archival artifacts:
 
 ```text
 predictions/intermediate/Y10_MS_1280_1536.json
@@ -62,4 +61,4 @@ predictions/intermediate/MSDN_L_SEC_MS3_DN.json
 predictions/final/FINAL_MSDN_L_EC2.json
 ```
 
-Do not claim exact end-to-end recomputation until an MMDetection/MMEngine environment has been validated against these committed outputs.
+Exact end-to-end recomputation should not be claimed unless an MMDetection/MMEngine environment is validated against these retained outputs.

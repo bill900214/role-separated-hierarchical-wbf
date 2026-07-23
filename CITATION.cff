@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this repository, please cite the associated paper."
+message: "If you use this repository, please cite the associated manuscript and this software artifact."
 title: "Role-Separated Hierarchical WBF for Multi-Scale YOLO-Transformer Fusion in Fisheye Road Object Detection"
 type: software
 authors:
@@ -7,6 +7,14 @@ authors:
     given-names: "Ding-Jun"
   - family-names: "Tsai"
     given-names: "Chun-Ming"
-version: 0.1.0
+version: 1.0.0
 date-released: 2026-07-23
 repository-code: "https://github.com/bill900214/role-separated-hierarchical-wbf"
+abstract: "Research artifacts for hierarchical multi-scale YOLO-Transformer fusion, Day/Night class-wise thresholding, and official hidden-test prediction outputs for fisheye road-object detection."
+keywords:
+  - fisheye object detection
+  - weighted boxes fusion
+  - multi-scale inference
+  - YOLO
+  - Transformer detector
+  - AI City Challenge

@@ -1,0 +1,19 @@
+# Artifact Manifest
+
+| File | Detections | Images | SHA-256 |
+|---|---:|---:|---|
+| `predictions/yolo_inputs/yolor_d6_2026_conf005_iou070_official.json` | 80,547 | 1,000 | `c9c68d984966cad2a6725e69730a52f23577f2698afe7f6cbab599bbaaeb239b` |
+| `predictions/yolo_inputs/yolov10x_second_c050_i065_official.json` | 40,994 | 1,000 | `10551b8abce7150ba923b9d8dc95b6cfa5c743a0d322c865aa3bbba50a609de6` |
+| `predictions/yolo_inputs/yolov10x_second_c050_i065_s1536_official.json` | 41,970 | 1,000 | `18eddbaf3f0a338d3d6c3358f0986e873386614df04fe1e2ce10bb710ed4f409` |
+| `predictions/yolo_inputs/yolov13l_second_c0495_i045_official.json` | 35,302 | 1,000 | `ba7c42ec8fd8a65c8bf2119c51d429bd22ab29311b769ffb25ca0f0351d0a8b6` |
+| `predictions/yolo_inputs/yolov13l_second_c0495_i045_s1536_official.json` | 35,694 | 1,000 | `c18b2db312659ea8e3844dad82bae50432e1ae236b8e17cd3e3f3f65958705d6` |
+| `predictions/intermediate/Y10_MS_1280_1536.json` | 43,820 | 1,000 | `6811e40491e90626dfbe325a0ce526494911784902d224dccfb32f546e64d867` |
+| `predictions/intermediate/Y13_MS_1280_1536.json` | 36,952 | 1,000 | `a9000867bb281017c29b37de8a337904c125ea27cd45727347b52fc89be04a51` |
+| `predictions/intermediate/SEC_MS3_Y10Y13MS_raw.json` | 52,310 | 1,000 | `bc64740fe82335a74e9e62753d6b7d61699aca5976651f7fa1839374333dc79a` |
+| `predictions/intermediate/MSDN_L_SEC_MS3_DN.json` | 35,352 | 1,000 | `b0f5d122ec8af134d328540a61ffd19f1582a092c58fc5b16f8826410f0106ff` |
+| `predictions/transformer_inputs/deimv2_832_conf005_iou070_official.json` | 131,372 | 1,000 | `e959ba790e918ee5d5e45d831642aac1ea96be6b60fcb5e717278eb265dd577f` |
+| `predictions/transformer_inputs/submission_deimv2_960_conf052_iou045.json` | 30,460 | 1,000 | `2dc9f60a3c943a3710ddf790baae6e5380a70859512db8c0db97aea0310002bf` |
+| `predictions/transformer_inputs/dfine1536_last_conf005_iou070_official.json` | 211,513 | 1,000 | `aae9a8f15ae7a071f7d561c1dac847399daa2390edef8476a51d3b27b9cf75c0` |
+| `predictions/final/FINAL_MSDN_L_EC2.json` | 33,834 | 1,000 | `2d1e30d7da07662d7284585d80ed720e98c1896d843a3bfe08629e1db6b7a7a7` |
+
+All files contain model predictions only and do not contain hidden ground-truth annotations.
