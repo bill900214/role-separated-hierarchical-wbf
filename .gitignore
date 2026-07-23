@@ -1,0 +1,45 @@
+# Datasets and private data
+datasets/
+data/
+FishEye8K/
+FishEye1K_eval/
+VisDrone/
+*.env
+.env
+.env.*
+
+# Model weights and binary artifacts
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.engine
+*.trt
+
+# Training outputs
+runs/
+wandb/
+outputs/
+output/
+logs/
+tensorboard/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Credentials
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Temporary archives
+*.tar
+*.tar.gz
+*.zip

@@ -1,0 +1,14 @@
+D-FINE-L-1536
+Path: /data/students/g11316019/D-FINE/output/dfine_l_fisheye_1536_v1_from1440e42_60e/last.pth
+Role: Final D-FINE-L-1536 inference checkpoint
+Resolution: 1536 x 1536
+
+DEIMv2-DINOv3-S-832
+Path: /data/students/g11316019/DEIMv2/outputs/deimv2_dinov3_s_fisheye_batch2_832_amp_200e/best_stg2.pth
+Role: DEIMv2-832 inference checkpoint
+Resolution: 832 x 832
+
+DEIMv2-DINOv3-S-960
+Prediction JSON: /data/students/g11316019/UT_2025_T4/submission_deimv2_960_conf052_iou045.json
+Checkpoint: TO_BE_VERIFIED
+Resolution: 960 x 960

@@ -1,0 +1,64 @@
+__include__: [
+  '../../../dataset/custom_detection.yml',
+  '../../../runtime.yml',
+  '../../include/dataloader_1280.yml',
+  '../../include/optimizer.yml',
+  '../../include/dfine_hgnetv2.yml',
+]
+
+output_dir: ./output/dfine_l_fisheye_1280_stage1_60e
+
+num_classes: 5
+remap_mscoco_category: False
+
+eval_spatial_size: [1280, 1280]
+
+train_dataloader:
+  dataset:
+    img_folder: /data/students/g11316019/dfine_fisheye/images/train_stage1_plus
+    ann_file: /data/students/g11316019/dfine_fisheye/annotations/train_stage1_plus_0base.json
+    transforms:
+      policy:
+        epoch: 50
+  collate_fn:
+    stop_epoch: 50
+    ema_restart_decay: 0.9999
+    base_size_repeat: 4
+
+val_dataloader:
+  dataset:
+    img_folder: /data/students/g11316019/dfine_fisheye/images/val
+    ann_file: /data/students/g11316019/dfine_fisheye/annotations/val_fisheye_0base.json
+
+DFINE:
+  backbone: HGNetv2
+
+HGNetv2:
+  name: 'B4'
+  return_idx: [1, 2, 3]
+  freeze_stem_only: True
+  freeze_at: 0
+  freeze_norm: True
+  pretrained: False
+
+optimizer:
+  type: AdamW
+  params:
+    -
+      params: '^(?=.*backbone)(?!.*norm|bn).*$'
+      lr: 0.0000125
+    -
+      params: '^(?=.*(?:encoder|decoder))(?=.*(?:norm|bn)).*$'
+      weight_decay: 0.
+
+  lr: 0.00025
+  betas: [0.9, 0.999]
+  weight_decay: 0.000125
+
+epochs: 60
+
+ema:
+  warmups: 0
+
+lr_warmup_scheduler:
+  warmup_duration: 0

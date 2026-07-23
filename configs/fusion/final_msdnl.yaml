@@ -1,0 +1,68 @@
+class_order:
+- Bus
+- Bike
+- Car
+- Pedestrian
+- Truck
+level1:
+  yolov10_multiscale:
+    inputs:
+    - yolov10_x_1280
+    - yolov10_x_1536
+    weights:
+    - 1.0
+    - 1.0
+    iou_threshold: 0.65
+    skip_box_threshold: 0.001
+    output_threshold: 0.001
+  yolov13_multiscale:
+    inputs:
+    - yolov13_l_1280
+    - yolov13_l_1536
+    weights:
+    - 1.0
+    - 1.0
+    iou_threshold: 0.65
+    skip_box_threshold: 0.001
+    output_threshold: 0.001
+level2:
+  inputs:
+  - yolor_d6_1280
+  - yolov10_multiscale
+  - yolov13_multiscale
+  weights:
+  - 9.0
+  - 9.0
+  - 9.0
+  iou_threshold: 0.65
+  skip_box_threshold: 0.15
+  output_threshold: 0.001
+day_night_threshold:
+  night_prefix: '293'
+  day:
+  - 0.28
+  - 0.28
+  - 0.28
+  - 0.28
+  - 0.23
+  night:
+  - 0.08
+  - 0.13
+  - 0.18
+  - 0.13
+  - 0.18
+level3:
+  inputs:
+  - yolo_main_daynight
+  - deimv2_s_960
+  - deimv2_s_832
+  - dfine_l_1536
+  weights:
+  - 1.2
+  - 0.065
+  - 0.05
+  - 0.05
+  iou_threshold: 0.65
+  skip_box_threshold: 0.001
+  final_confidence_threshold: 0.295
+  top_k_per_image: 300
