@@ -1,21 +1,11 @@
 # Final Prediction JSON
 
-Place the final official-platform submission file here:
+This directory contains the final prediction JSON submitted to the official evaluation platform.
 
-```text
-FINAL_MSDN_L_EC2.json
-```
+- `FINAL_MSDN_L_EC2.json`  
+  Final Level III YOLO–Transformer WBF prediction result.
 
-This file contains model predictions only and does not contain hidden ground-truth annotations.
+- `FINAL_MSDN_L_EC2.sha256`  
+  SHA-256 checksum used to verify file integrity.
 
-Also add:
-
-```text
-FINAL_MSDN_L_EC2.sha256
-```
-
-Create it with:
-
-```bash
-sha256sum FINAL_MSDN_L_EC2.json > FINAL_MSDN_L_EC2.sha256
-```
+The JSON contains model predictions only and does not contain hidden ground-truth annotations.
