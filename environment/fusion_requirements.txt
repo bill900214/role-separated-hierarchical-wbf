@@ -1,0 +1,6 @@
+# Portable validation and Day/Night threshold utilities
+# Exact versions are intentionally not pinned as the original MMDetection WBF
+# environment metadata was not preserved.
+numpy
+Pillow
+PyYAML

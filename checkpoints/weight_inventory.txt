@@ -4,6 +4,11 @@ Original role: Final D-FINE-L-1536 inference checkpoint
 Resolution: 1536 x 1536
 SHA-256: 72e10317664352bd85b2e13e06d6b29c2ce488137533d575c4269dd4395a709b
 
+D-FINE-L intermediate provenance
+Stage-1 selected checkpoint: dfine1280_checkpoint0047_F1_06063.pth
+Stage-2 selected checkpoint: dfine1440_e42_F1_06103.pth
+Release status: documented for provenance; not all intermediate checkpoints are redistributed
+
 DEIMv2-DINOv3-S-832
 Filename: deimv2_s_832_best_stg2.pth
 Original role: DEIMv2-832 inference checkpoint
@@ -15,7 +20,13 @@ Filename: vitt_distill.pt
 SHA-256: 2053b865f4e2673fba3f95f7e7e54ad5ee18143885e3ad27eaabb5b3b9919738
 
 DEIMv2-DINOv3-S-960
-Prediction JSON: predictions/transformer_inputs/submission_deimv2_960_conf052_iou045.json
-Checkpoint filename: not preserved in the collected experiment archive
 Resolution: 960 x 960
-Release scope: prediction JSON and method description only
+Checkpoint: not redistributed; not retained in the collected experiment archive
+Release scope: actual prediction JSON and method description only
+Prediction JSON: predictions/transformer_inputs/submission_deimv2_960_conf052_iou045.json
+Prediction JSON detections: 30460
+Prediction JSON images: 1000
+Prediction JSON SHA-256: 2dc9f60a3c943a3710ddf790baae6e5380a70859512db8c0db97aea0310002bf
+Inference confidence: 0.52
+Inference IoU: 0.45
+Final Level III WBF weight: 0.065
