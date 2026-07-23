@@ -48,6 +48,7 @@ def main(args):
         start_time = time.time()
         pred = model.predict(
             source=img,
+            imgsz=args.img_size,
             conf=args.conf,
             iou=args.iou,
             device=args.device,
@@ -81,11 +82,54 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', type=str, required=True, help='YOLOv13 PyTorch .pt model path')
-    parser.add_argument('--image_dir', type=str, required=True, help='Path to evaluation image folder')
-    parser.add_argument('--output', type=str, required=True, help='Path to output JSON file')
-    parser.add_argument('--conf', type=float, default=0.25, help='Confidence threshold')
-    parser.add_argument('--iou', type=float, default=0.5, help='IoU threshold for NMS')
-    parser.add_argument('--device', type=int, default=0, help='CUDA device to use')
+    parser.add_argument(
+    '--model',
+    type=str,
+    required=True,
+    help='YOLOv13 PyTorch .pt model path'
+)
+
+parser.add_argument(
+    '--image_dir',
+    type=str,
+    required=True,
+    help='Path to evaluation image folder'
+)
+
+parser.add_argument(
+    '--output',
+    type=str,
+    required=True,
+    help='Path to output JSON file'
+)
+
+parser.add_argument(
+    '--img_size',
+    type=int,
+    default=1280,
+    choices=[1280, 1536],
+    help='Inference resolution. Final method uses 1280 and 1536.'
+)
+
+parser.add_argument(
+    '--conf',
+    type=float,
+    default=0.495,
+    help='Confidence threshold'
+)
+
+parser.add_argument(
+    '--iou',
+    type=float,
+    default=0.45,
+    help='IoU threshold for NMS'
+)
+
+parser.add_argument(
+    '--device',
+    type=int,
+    default=0,
+    help='CUDA device to use'
+)
     args = parser.parse_args()
     main(args)
