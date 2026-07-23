@@ -1,22 +1,26 @@
-# Fusion Scripts
+# Fusion and Threshold Scripts
 
-## Reproducible Day/Night Stage
+## Level-I Same-Model Multi-Scale Inspection
 
 ```bash
 export PROJECT_ROOT=/path/to/role-separated-hierarchical-wbf
+export EVAL_IMAGES=/path/to/FishEye1K_eval/images
+
+bash scripts/fusion/reproduce_level1.sh
+```
+
+## Day/Night Threshold Reconstruction
+
+```bash
+export PROJECT_ROOT=/path/to/role-separated-hierarchical-wbf
+
 bash scripts/fusion/reproduce_day_night.sh
 ```
 
-The script reconstructs the final relaxed Day/Night threshold result and compares it with the committed archival JSON.
+The Day/Night stage is exactly validated against the committed JSON.
 
-## WBF Scope
+## Level-II and Level-III
 
-The original Level-II and Level-III experiments used the MMDetection implementation imported as:
-
-```python
-from mmdet.models.utils import weighted_boxes_fusion
-```
-
-The precise original package versions were not preserved. The current portable WBF helper is therefore not presented as a bit-for-bit reproduction of the original Level-II/III outputs.
+The original experiment used `mmdet.models.utils.weighted_boxes_fusion`. The exact original package versions were not preserved, so the current portable helper is not claimed to reconstruct Level II or Level III bit-for-bit.
 
 See `docs/WBF_REPRODUCIBILITY.md`.

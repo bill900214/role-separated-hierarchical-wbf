@@ -3,46 +3,59 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
 
-def canonical(item: dict[str, Any]) -> tuple[Any, ...]:
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Compare two prediction JSON files after canonical rounding."
+    )
+    parser.add_argument("expected", type=Path)
+    parser.add_argument("actual", type=Path)
+    parser.add_argument(
+        "--decimals",
+        type=int,
+        default=6,
+        help="Decimal places used for bbox and score comparison.",
+    )
+    return parser.parse_args()
+
+
+def canonical(
+    item: dict[str, Any],
+    decimals: int,
+) -> tuple[Any, ...]:
     return (
         int(item["image_id"]),
         int(item["category_id"]),
-        tuple(round(float(value), 6) for value in item["bbox"]),
-        round(float(item["score"]), 6),
+        tuple(round(float(value), decimals) for value in item["bbox"]),
+        round(float(item["score"]), decimals),
     )
 
 
-def load(path: Path) -> list[tuple[Any, ...]]:
+def load(path: Path, decimals: int) -> Counter[tuple[Any, ...]]:
     with path.open("r", encoding="utf-8") as file:
         data = json.load(file)
     if not isinstance(data, list):
         raise ValueError(f"{path} must contain a list.")
-    return sorted(canonical(item) for item in data)
+    return Counter(canonical(item, decimals) for item in data)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Compare two prediction JSON files after canonical sorting."
-    )
-    parser.add_argument("expected", type=Path)
-    parser.add_argument("actual", type=Path)
-    args = parser.parse_args()
+    args = parse_args()
+    expected = load(args.expected, args.decimals)
+    actual = load(args.actual, args.decimals)
 
-    expected = load(args.expected)
-    actual = load(args.actual)
+    print(f"Expected detections: {sum(expected.values())}")
+    print(f"Actual detections: {sum(actual.values())}")
 
-    print(f"Expected detections: {len(expected)}")
-    print(f"Actual detections: {len(actual)}")
-
-    if expected != actual:
-        expected_set = set(expected)
-        actual_set = set(actual)
-        print(f"Missing canonical entries: {len(expected_set - actual_set)}")
-        print(f"Extra canonical entries: {len(actual_set - expected_set)}")
+    missing = expected - actual
+    extra = actual - expected
+    if missing or extra:
+        print(f"Missing canonical entries: {sum(missing.values())}")
+        print(f"Extra canonical entries: {sum(extra.values())}")
         raise SystemExit(1)
 
     print("Status: MATCH")

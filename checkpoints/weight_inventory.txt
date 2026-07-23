@@ -1,22 +1,26 @@
 D-FINE-L-1536
-Filename: dfine_l_fisheye_1536_last.pth
-Original role: Final D-FINE-L-1536 inference checkpoint
+Original output directory: dfine_l_fisheye_1536_v1_from1440e42_60e
+Original checkpoint filename: last.pth
+Suggested release filename: dfine_l_fisheye_1536_last.pth
+Original role: final D-FINE-L-1536 inference checkpoint
 Resolution: 1536 x 1536
 SHA-256: 72e10317664352bd85b2e13e06d6b29c2ce488137533d575c4269dd4395a709b
 
 D-FINE-L intermediate provenance
 Stage-1 selected checkpoint: dfine1280_checkpoint0047_F1_06063.pth
 Stage-2 selected checkpoint: dfine1440_e42_F1_06103.pth
-Release status: documented for provenance; not all intermediate checkpoints are redistributed
+Release status: documented for provenance; intermediate binaries are not bundled
 
 DEIMv2-DINOv3-S-832
-Filename: deimv2_s_832_best_stg2.pth
-Original role: DEIMv2-832 inference checkpoint
+Original output directory: deimv2_dinov3_s_fisheye_batch2_832_amp_200e
+Original checkpoint filename: best_stg2.pth
+Suggested release filename: deimv2_s_832_best_stg2.pth
+Original role: DEIMv2-S-832 inference checkpoint
 Resolution: 832 x 832
 SHA-256: d26ccc68f0c657036898ccc46f29116c3232ca50bfb04d76be974ef22963ca62
 
 DEIMv2 DINOv3 distillation checkpoint
-Filename: vitt_distill.pt
+Original filename: vitt_distill.pt
 SHA-256: 2053b865f4e2673fba3f95f7e7e54ad5ee18143885e3ad27eaabb5b3b9919738
 
 DEIMv2-DINOv3-S-960

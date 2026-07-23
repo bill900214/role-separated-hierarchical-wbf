@@ -8,7 +8,64 @@ import cv2
 import numpy as np
 import torch
 from ultralytics import YOLO
-from utils.datasets import letterbox
+
+
+def letterbox(
+    image: np.ndarray,
+    new_shape: int | tuple[int, int] = 640,
+    color: tuple[int, int, int] = (114, 114, 114),
+    auto: bool = False,
+    scale_fill: bool = False,
+    scale_up: bool = True,
+    stride: int = 32,
+):
+    """Resize and pad an image while preserving aspect ratio."""
+    shape = image.shape[:2]
+
+    if isinstance(new_shape, int):
+        new_shape = (new_shape, new_shape)
+
+    ratio = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
+    if not scale_up:
+        ratio = min(ratio, 1.0)
+
+    ratio_pair = (ratio, ratio)
+    unpadded = (int(round(shape[1] * ratio)), int(round(shape[0] * ratio)))
+    width_padding = new_shape[1] - unpadded[0]
+    height_padding = new_shape[0] - unpadded[1]
+
+    if auto:
+        width_padding %= stride
+        height_padding %= stride
+    elif scale_fill:
+        width_padding = 0.0
+        height_padding = 0.0
+        unpadded = (new_shape[1], new_shape[0])
+        ratio_pair = (
+            new_shape[1] / shape[1],
+            new_shape[0] / shape[0],
+        )
+
+    width_padding /= 2
+    height_padding /= 2
+
+    if shape[::-1] != unpadded:
+        image = cv2.resize(image, unpadded, interpolation=cv2.INTER_LINEAR)
+
+    top = int(round(height_padding - 0.1))
+    bottom = int(round(height_padding + 0.1))
+    left = int(round(width_padding - 0.1))
+    right = int(round(width_padding + 0.1))
+    image = cv2.copyMakeBorder(
+        image,
+        top,
+        bottom,
+        left,
+        right,
+        cv2.BORDER_CONSTANT,
+        value=color,
+    )
+    return image, ratio_pair, (width_padding, height_padding)
 
 
 def parse_args() -> argparse.Namespace:

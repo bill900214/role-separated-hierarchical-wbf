@@ -43,3 +43,8 @@ id_ed25519
 *.tar
 *.tar.gz
 *.zip
+
+# Reproduced local artifacts
+reproduced/
+*_reproduced.json
+infer_txt/

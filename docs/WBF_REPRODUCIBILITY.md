@@ -8,37 +8,51 @@ The retained original experimental script imports:
 from mmdet.models.utils import weighted_boxes_fusion
 ```
 
-The corresponding script is preserved at:
+It is preserved at:
 
 ```text
 legacy/wbf_fuse_results_original_found.py
 ```
 
-It uses the MMDetection WBF implementation and the experiment-specific image list derived from a COCO annotation file.
+The precise original MMDetection/MMEngine package versions were not preserved in the collected archive.
 
 ## Portable Helper
 
-A portable helper is retained at:
+The standalone comparison helper is:
+
+```text
+code/fusion/wbf_portable_helper.py
+```
+
+A compatibility entry point remains at:
 
 ```text
 code/fusion/wbf_fuse_official.py
 ```
 
-This helper is useful for format inspection and approximate reconstruction, but it is not the same implementation as the original MMDetection function.
+Despite the historical filename, the compatibility entry point is **not** the original MMDetection implementation.
 
-## Verified Scope
+## Verified Portable Scope
 
-The repository audit verified:
+- The Day/Night class-wise stage exactly reconstructs `MSDN_L_SEC_MS3_DN.json`.
+- YOLOv13-L Level-I same-model multi-scale fusion can be reconstructed from the retained JSON inputs.
+- YOLOv10-X Level-I reconstruction matches the retained artifact when compared at five decimal places; differences near `1e-6` may occur across numerical environments.
 
-- Day/Night class-wise thresholding exactly reconstructs `MSDN_L_SEC_MS3_DN.json`.
-- YOLOv13-L Level-I multi-scale fusion can be reconstructed from the committed prediction inputs.
-- YOLOv10-X Level-I reconstruction matches the retained detection count, with possible floating-point differences near `1e-6`.
+Run:
 
-## Unresolved Exact-Reproduction Scope
+```bash
+export PROJECT_ROOT=/path/to/role-separated-hierarchical-wbf
+export EVAL_IMAGES=/path/to/FishEye1K_eval/images
 
-The precise original MMDetection/MMEngine package versions were not preserved in the collected archive. The current portable helper is therefore **not claimed to reconstruct the original Level-II and Level-III JSON files bit-for-bit**.
+bash scripts/fusion/reproduce_level1.sh
+bash scripts/fusion/reproduce_day_night.sh
+```
 
-The following committed files are the authoritative experimental artifacts:
+## Level-II and Level-III Scope
+
+The portable helper is not claimed to reconstruct the original Level-II or Level-III outputs bit-for-bit.
+
+The authoritative archival artifacts are:
 
 ```text
 predictions/intermediate/Y10_MS_1280_1536.json
@@ -48,14 +62,4 @@ predictions/intermediate/MSDN_L_SEC_MS3_DN.json
 predictions/final/FINAL_MSDN_L_EC2.json
 ```
 
-## Recommended Use
-
-Use the repository to:
-
-- inspect the actual input and output prediction artifacts;
-- verify JSON integrity and checksums;
-- reproduce the Day/Night threshold stage;
-- inspect the exact reported fusion parameters;
-- compare alternative WBF implementations against the archived outputs.
-
-Do not describe the portable helper as an exact end-to-end reproduction of the original MMDetection Level-II/III pipeline unless the original package versions are recovered and output equivalence is verified.
+Do not claim exact end-to-end recomputation until an MMDetection/MMEngine environment has been validated against these committed outputs.

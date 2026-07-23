@@ -2,7 +2,9 @@
 
 The detectors were executed in separate upstream environments.
 
-## Known Utility/Fusion Environment Record
+## Portable Utilities
+
+The local validators and Day/Night threshold utility require Python 3.10 or newer.
 
 A retained conversion and analysis environment used:
 
@@ -25,8 +27,8 @@ The original script imported:
 from mmdet.models.utils import weighted_boxes_fusion
 ```
 
-The exact MMDetection and MMEngine version identifiers were not preserved in the collected archive. Do not invent versions. Recompute Level-II/III only after recovering or selecting a compatible environment and validating outputs against the committed JSON artifacts.
+The precise MMDetection and MMEngine version identifiers were not preserved. No version is invented in this release.
 
 ## Upstream Environments
 
-YOLOR, YOLOv10, YOLOv13, D-FINE, and DEIMv2 should be installed according to their corresponding upstream repositories. Their source roots are supplied to the wrappers through environment variables.
+Install YOLOR, YOLOv10, YOLOv13, D-FINE, and DEIMv2 according to their upstream repositories. Source roots are supplied to the wrappers through environment variables.

@@ -50,7 +50,7 @@ The original DEIMv2-S-960 checkpoint and its exact training-output directory wer
 - checkpoint-level reproduction is not claimed;
 - no checkpoint filename or checksum is invented.
 
-The full upstream DEIMv2 framework is not duplicated in this repository. Users should consult the official upstream implementation and the experiment-specific files retained here.
+The full upstream DEIMv2 framework is not duplicated in this repository. The retained 832 reference wrapper is `code/inference/deimv2/infer_deimv2_832.py`. Users must provide an upstream DEIMv2 checkout.
 
 ## Prediction Format
 

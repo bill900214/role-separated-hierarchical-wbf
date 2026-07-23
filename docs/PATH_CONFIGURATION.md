@@ -2,13 +2,26 @@
 
 Private server paths have been replaced with portable placeholders.
 
-Before running training or inference, replace these placeholders in the relevant YAML files or pass paths through command-line arguments:
+## Common Environment Variables
+
+```text
+PROJECT_ROOT
+EVAL_IMAGES
+YOLOR_ROOT
+YOLOV10_ROOT
+YOLOV13_ROOT
+DEIMV2_ROOT
+DFINE_ROOT
+```
+
+Checkpoint variables are documented inside each shell wrapper.
+
+## Training Configuration Paths
+
+The retained YAML files contain placeholders such as:
 
 ```text
 /path/to/project
-/path/to/datasets
-/path/to/FishEye1K_eval/images
-/path/to/checkpoints
 ```
 
-Do not commit local absolute paths, account names, API tokens, private keys, or hidden evaluation annotations.
+Replace them in a local copy or parameterize them through the upstream framework. Do not commit personal account paths, API tokens, private keys, or hidden evaluation annotations.

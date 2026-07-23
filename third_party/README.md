@@ -13,6 +13,6 @@ This project relies on upstream implementations. Their licenses remain applicabl
 
 ## Revision note
 
-Exact upstream commit hashes were not stored in the collected experiment archive. The repository therefore identifies upstream projects and preserves the experiment-specific files, but does not invent commit hashes. Before a formal archival release, record the actual commit hashes from the original server clones when available.
+Exact upstream commit hashes were not stored in the collected experiment archive. The repository therefore identifies upstream projects and preserves the experiment-specific files, but does not invent commit hashes. If the original server clones remain available, their commit hashes should be recorded in a later archival revision. No commit hash is invented in this release.
 
 Do not apply a blanket license to upstream-derived files without preserving the corresponding upstream notices and license requirements.

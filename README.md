@@ -114,12 +114,14 @@ All values were returned by the official AI City Challenge evaluation platform u
 ├── README.md
 ├── CITATION.cff
 ├── LICENSING.md
+├── LICENSES/
 ├── checkpoints/
 ├── code/
 │   ├── data_tools/
 │   ├── fusion/
 │   └── inference/
 ├── configs/
+│   ├── README.md
 │   ├── fusion/
 │   └── transformer/
 ├── docs/
@@ -148,6 +150,24 @@ All values were returned by the official AI City Challenge evaluation platform u
 - `docs/WBF_REPRODUCIBILITY.md`: exact reproducibility scope of the fusion implementation.
 - `docs/EVALUATION.md`: hidden-test evaluation protocol.
 - `docs/PATH_CONFIGURATION.md`: dataset, upstream repository, and checkpoint path configuration.
+
+## Quick Integrity Checks
+
+```bash
+python scripts/validation/validate_prediction_json.py \
+  predictions/final/FINAL_MSDN_L_EC2.json \
+  --expected-images 1000
+
+export PROJECT_ROOT=/path/to/role-separated-hierarchical-wbf
+bash scripts/fusion/reproduce_day_night.sh
+```
+
+Level-I inspection additionally requires the FishEye1K_eval image directory:
+
+```bash
+export EVAL_IMAGES=/path/to/FishEye1K_eval/images
+bash scripts/fusion/reproduce_level1.sh
+```
 
 ## Prediction Artifacts
 
