@@ -57,3 +57,17 @@ bash scripts/fusion/reproduce_level1.sh
 ## Evaluation Boundary
 
 Hidden-test AP and F1 metrics cannot be recalculated locally because the reference annotations remain on the official evaluation platform. The repository provides the submitted prediction JSON and the platform-returned metric record.
+
+
+## Inspect the Official Result Progression
+
+```text
+docs/RESULTS_PROGRESSION.md
+results/official_metrics.csv
+```
+
+The repository flowchart is stored at:
+
+```text
+docs/assets/role_separated_hierarchical_wbf_pipeline.png
+```

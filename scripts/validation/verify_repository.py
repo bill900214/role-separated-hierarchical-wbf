@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import ast
+import csv
 import hashlib
 import json
 import re
@@ -152,10 +153,86 @@ def check_final_config(root: Path) -> None:
         0.13,
         0.18,
     ]
+    assert config["level2"]["weights"] == [9.0, 9.0, 9.0]
+    assert config["level2"]["normalized_weight_ratio"] == [1.0, 1.0, 1.0]
     assert config["level3"]["weights"] == [1.2, 0.065, 0.05, 0.05]
     assert config["level3"]["final_confidence_threshold"] == 0.295
     assert config["level3"]["top_k_per_image"] == 300
 
+
+
+def check_official_metrics(root: Path) -> None:
+    path = root / "results/official_metrics.csv"
+    with path.open("r", encoding="utf-8", newline="") as file:
+        rows = list(csv.DictReader(file))
+
+    expected = [
+        {
+            "method": "Three-YOLO equal-weight fusion without Day/Night thresholds",
+            "f1": "0.5719",
+            "ap50_95": "0.6360",
+            "ap50": "0.8739",
+            "ap_s": "0.4983",
+            "ap_m": "0.7426",
+            "ap_l": "0.6268",
+        },
+        {
+            "method": "Three-YOLO main branch with Day/Night scene-specific class-wise thresholds",
+            "f1": "0.6377",
+            "ap50_95": "0.6033",
+            "ap50": "0.8080",
+            "ap_s": "0.4531",
+            "ap_m": "0.7284",
+            "ap_l": "0.6203",
+        },
+        {
+            "method": "Original heterogeneous baseline",
+            "f1": "0.6562",
+            "ap50_95": "0.6050",
+            "ap50": "0.8060",
+            "ap_s": "0.4532",
+            "ap_m": "0.7325",
+            "ap_l": "0.6196",
+        },
+        {
+            "method": "Multi-scale YOLO",
+            "f1": "0.6596",
+            "ap50_95": "0.6123",
+            "ap50": "0.8170",
+            "ap_s": "0.4665",
+            "ap_m": "0.7362",
+            "ap_l": "0.6214",
+        },
+        {
+            "method": "Final MSDNL",
+            "f1": "0.6604",
+            "ap50_95": "0.6147",
+            "ap50": "0.8220",
+            "ap_s": "0.4709",
+            "ap_m": "0.7378",
+            "ap_l": "0.6214",
+        },
+    ]
+
+    if len(rows) != len(expected):
+        raise ValueError(
+            f"Expected {len(expected)} official metric rows, found {len(rows)}."
+        )
+
+    keys = ("method", "f1", "ap50_95", "ap50", "ap_s", "ap_m", "ap_l")
+    for actual, wanted in zip(rows, expected):
+        for key in keys:
+            if actual[key] != wanted[key]:
+                raise ValueError(
+                    f"Official metric mismatch for {wanted['method']} / {key}: "
+                    f"expected {wanted[key]}, found {actual[key]}"
+                )
+
+
+def check_method_figure(root: Path) -> None:
+    path = root / "docs/assets/role_separated_hierarchical_wbf_pipeline.png"
+    if not path.exists() or path.stat().st_size == 0:
+        raise FileNotFoundError(f"Missing method flowchart: {path}")
 
 def check_private_patterns(root: Path) -> None:
     skip_suffixes = {
@@ -260,6 +337,12 @@ def main() -> None:
 
     check_final_config(root)
     print("Final fusion configuration: PASS")
+
+    check_official_metrics(root)
+    print("Official result progression: PASS")
+
+    check_method_figure(root)
+    print("Method flowchart: PASS")
 
     check_private_patterns(root)
     print("Private path/credential scan: PASS")

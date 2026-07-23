@@ -62,7 +62,8 @@ predictions/intermediate/SEC_MS3_Y10Y13MS_raw.json
 Parameters:
 
 ```text
-weights = 9:9:9
+normalized weight ratio = 1:1:1
+stored implementation weights = 9:9:9
 IoU = 0.65
 skip threshold = 0.15
 output threshold = 0.001

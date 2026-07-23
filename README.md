@@ -19,27 +19,18 @@ Companion artifact repository for a manuscript prepared for the **AI City Challe
 
 ## Method at a Glance
 
-```mermaid
-flowchart LR
-    Y10A["YOLOv10-X<br/>1280"] --> L1Y10["Level I WBF<br/>1:1"]
-    Y10B["YOLOv10-X<br/>1536"] --> L1Y10
+<p align="center">
+  <img
+    src="docs/assets/role_separated_hierarchical_wbf_pipeline.png"
+    alt="Role-separated hierarchical WBF pipeline for multi-scale YOLO and Transformer auxiliary predictions"
+    width="100%"
+  >
+</p>
 
-    Y13A["YOLOv13-L<br/>1280"] --> L1Y13["Level I WBF<br/>1:1"]
-    Y13B["YOLOv13-L<br/>1536"] --> L1Y13
-
-    YR["YOLOR-D6<br/>1280"] --> L2["Level II YOLO WBF<br/>9:9:9"]
-    L1Y10 --> L2
-    L1Y13 --> L2
-
-    L2 --> DN["Day/Night<br/>Class-Wise Thresholding"]
-
-    DN --> L3["Level III WBF"]
-    D960["DEIMv2-S<br/>960"] --> L3
-    D832["DEIMv2-S<br/>832"] --> L3
-    DF["D-FINE-L<br/>1536"] --> L3
-
-    L3 --> FINAL["FINAL_MSDN_L_EC2.json"]
-```
+**Figure 1. Role-separated hierarchical WBF pipeline.**  
+The Level-II block shows the normalized equal-weight ratio `1:1:1`.
+The retained configuration stores the equivalent common-scaled ratio
+`9:9:9`; both express the same relative branch weighting.
 
 ## Final Configuration
 
@@ -60,7 +51,7 @@ Bus, Bike, Car, Pedestrian, Truck
 
 | Inputs | Weights | IoU | Skip threshold | Output threshold |
 |---|---:|---:|---:|---:|
-| YOLOR-D6 1280 + Y10_MS + Y13_MS | 9:9:9 | 0.65 | 0.15 | 0.001 |
+| YOLOR-D6 1280 + Y10_MS + Y13_MS | 1:1:1 normalized (`9:9:9` stored) | 0.65 | 0.15 | 0.001 |
 
 ### Day/Night Class-Wise Thresholding
 
@@ -93,15 +84,28 @@ Final confidence threshold: 0.295
 Maximum detections per image: 300
 ```
 
-## Official Results
+## Official Result Progression
 
 | Method | F1 | AP50–95 | AP50 | AP_S | AP_M | AP_L |
 |---|---:|---:|---:|---:|---:|---:|
+| Three-YOLO equal-weight fusion, without Day/Night thresholds | 0.5719 | 0.6360 | 0.8739 | 0.4983 | 0.7426 | 0.6268 |
+| Three-YOLO main branch + Day/Night scene-specific class-wise thresholds | 0.6377 | 0.6033 | 0.8080 | 0.4531 | 0.7284 | 0.6203 |
 | Original heterogeneous baseline | 0.6562 | 0.6050 | 0.8060 | 0.4532 | 0.7325 | 0.6196 |
-| Multi-scale YOLO | 0.6596 | 0.6123 | — | 0.4665 | — | — |
+| Multi-scale YOLO | 0.6596 | 0.6123 | 0.8170 | 0.4665 | 0.7362 | 0.6214 |
 | Final MSDNL | **0.6604** | **0.6147** | **0.8220** | **0.4709** | **0.7378** | **0.6214** |
 
-The values above were returned by the official AI City Challenge evaluation platform under the same 1,000-image FishEye1K_eval submission protocol.
+The official F1 progression is:
+
+```text
+0.5719 → 0.6377 → 0.6562 → 0.6596 → 0.6604
+```
+
+All values were returned by the official AI City Challenge evaluation
+platform under the same 1,000-image FishEye1K_eval submission protocol.
+The complete tabular record is stored in
+[`results/official_metrics.csv`](results/official_metrics.csv), with additional
+method-stage notes in
+[`docs/RESULTS_PROGRESSION.md`](docs/RESULTS_PROGRESSION.md).
 
 ## Five-Minute Artifact Check
 
