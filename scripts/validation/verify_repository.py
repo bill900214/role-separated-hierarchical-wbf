@@ -27,7 +27,6 @@ EXPECTED_DEIM960_IMAGES = 1000
 PRIVATE_PATTERNS = (
     "/data/students/",
     "/data/datasets/",
-    "g11316019",
     "BEGIN PRIVATE KEY",
     "ghp_",
     "github_pat_",
@@ -161,57 +160,19 @@ def check_final_config(root: Path) -> None:
 
 
 
+
 def check_official_metrics(root: Path) -> None:
     path = root / "results/official_metrics.csv"
     with path.open("r", encoding="utf-8", newline="") as file:
         rows = list(csv.DictReader(file))
 
     expected = [
-        {
-            "method": "Three-YOLO equal-weight fusion without Day/Night thresholds",
-            "f1": "0.5719",
-            "ap50_95": "0.6360",
-            "ap50": "0.8739",
-            "ap_s": "0.4983",
-            "ap_m": "0.7426",
-            "ap_l": "0.6268",
-        },
-        {
-            "method": "Three-YOLO main branch with Day/Night scene-specific class-wise thresholds",
-            "f1": "0.6377",
-            "ap50_95": "0.6033",
-            "ap50": "0.8080",
-            "ap_s": "0.4531",
-            "ap_m": "0.7284",
-            "ap_l": "0.6203",
-        },
-        {
-            "method": "Original heterogeneous baseline",
-            "f1": "0.6562",
-            "ap50_95": "0.6050",
-            "ap50": "0.8060",
-            "ap_s": "0.4532",
-            "ap_m": "0.7325",
-            "ap_l": "0.6196",
-        },
-        {
-            "method": "Multi-scale YOLO",
-            "f1": "0.6596",
-            "ap50_95": "0.6123",
-            "ap50": "0.8170",
-            "ap_s": "0.4665",
-            "ap_m": "0.7362",
-            "ap_l": "0.6214",
-        },
-        {
-            "method": "Final MSDNL",
-            "f1": "0.6604",
-            "ap50_95": "0.6147",
-            "ap50": "0.8220",
-            "ap_s": "0.4709",
-            "ap_m": "0.7378",
-            "ap_l": "0.6214",
-        },
+        {"method": "Historical Raw Equal-Weight WBF", "f1": "0.5719", "ap50_95": "0.6360", "ap50": "0.8739", "ap_s": "0.4983", "ap_m": "0.7426", "ap_l": "0.6268"},
+        {"method": "Historical Day/Night Thresholding", "f1": "0.6377", "ap50_95": "0.6033", "ap50": "0.8080", "ap_s": "0.4531", "ap_m": "0.7284", "ap_l": "0.6203"},
+        {"method": "Best Recorded YOLO-Only Stage (IoU=0.6575)", "f1": "0.6425", "ap50_95": "", "ap50": "", "ap_s": "", "ap_m": "", "ap_l": ""},
+        {"method": "Selected YOLO-Transformer Setting", "f1": "0.6562", "ap50_95": "0.6050", "ap50": "0.8060", "ap_s": "0.4532", "ap_m": "0.7325", "ap_l": "0.6196"},
+        {"method": "Same-Model Multi-Scale YOLO", "f1": "0.6596", "ap50_95": "0.6123", "ap50": "0.8170", "ap_s": "0.4665", "ap_m": "0.7362", "ap_l": "0.6214"},
+        {"method": "Final Scene-Specific Thresholding (MSDNL)", "f1": "0.6604", "ap50_95": "0.6147", "ap50": "0.8220", "ap_s": "0.4709", "ap_m": "0.7378", "ap_l": "0.6214"},
     ]
 
     if len(rows) != len(expected):
@@ -225,14 +186,71 @@ def check_official_metrics(root: Path) -> None:
             if actual[key] != wanted[key]:
                 raise ValueError(
                     f"Official metric mismatch for {wanted['method']} / {key}: "
-                    f"expected {wanted[key]}, found {actual[key]}"
+                    f"expected {wanted[key]!r}, found {actual[key]!r}"
                 )
+
 
 
 def check_method_figure(root: Path) -> None:
     path = root / "docs/assets/role_separated_hierarchical_wbf_pipeline.png"
     if not path.exists() or path.stat().st_size == 0:
         raise FileNotFoundError(f"Missing method flowchart: {path}")
+    expected = "cb0399c5dfdf90cd547fdda930fa3ef3379a65fb0b5a75fc8764e13882127bfd"
+    actual = digest(path)
+    if actual != expected:
+        raise ValueError(
+            f"The original manuscript flowchart was modified: {actual}"
+        )
+
+
+def check_release_assets(root: Path) -> None:
+    required = [
+        root / "LICENSE",
+        root / "NOTICE",
+        root / "THIRD_PARTY_NOTICES.md",
+        root / "docs/assets/role_separated_hierarchical_wbf_pipeline.png",
+        root / "docs/DATA_AND_ANNOTATION_STATUS.md",
+        root / "docs/MANUSCRIPT_METADATA.md",
+    ]
+    for path in required:
+        if not path.exists() or path.stat().st_size == 0:
+            raise FileNotFoundError(f"Missing release asset: {path}")
+
+
+def check_manuscript_metadata(root: Path) -> None:
+    citation = yaml.safe_load(
+        (root / "CITATION.cff").read_text(encoding="utf-8")
+    )
+    expected_title = "Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection"
+    if citation["title"] != expected_title:
+        raise ValueError(
+            f"CITATION title mismatch: {citation['title']!r}"
+        )
+
+    expected_authors = [
+        ("Tsai", "Chun-Ming"),
+        ("Huang", "Ding-Jun"),
+        ("Hsieh", "Jun-Wei"),
+        ("Chang", "Ming-Ching"),
+    ]
+    actual_authors = [
+        (author["family-names"], author["given-names"])
+        for author in citation["authors"]
+    ]
+    if actual_authors != expected_authors:
+        raise ValueError(
+            f"CITATION author order mismatch: {actual_authors}"
+        )
+
+    readme = (root / "README.md").read_text(encoding="utf-8")
+    if expected_title not in readme:
+        raise ValueError("README does not contain the exact manuscript title.")
+    author_line = (
+        "Chun-Ming Tsai, Ding-Jun Huang, Jun-Wei Hsieh, "
+        "and Ming-Ching Chang"
+    )
+    if author_line not in readme:
+        raise ValueError("README author order does not match the manuscript.")
 
 def check_private_patterns(root: Path) -> None:
     skip_suffixes = {
@@ -343,6 +361,12 @@ def main() -> None:
 
     check_method_figure(root)
     print("Method flowchart: PASS")
+
+    check_release_assets(root)
+    print("Release assets and license: PASS")
+
+    check_manuscript_metadata(root)
+    print("Manuscript title and authors: PASS")
 
     check_private_patterns(root)
     print("Private path/credential scan: PASS")

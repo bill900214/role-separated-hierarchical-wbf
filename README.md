@@ -1,12 +1,17 @@
-# Role-Separated Hierarchical WBF for Multi-Scale YOLO–Transformer Fusion in Fisheye Road Object Detection
+# Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection
 
 [![Artifact integrity](https://github.com/bill900214/role-separated-hierarchical-wbf/actions/workflows/artifact-integrity.yml/badge.svg)](https://github.com/bill900214/role-separated-hierarchical-wbf/actions/workflows/artifact-integrity.yml)
 
-Companion artifact repository for a manuscript prepared for the **AI City Challenge Workshop at ECCV 2026**.
+Research artifact repository accompanying the manuscript on role-separated hierarchical fusion for fisheye object detection.
 
-> **Role-Separated Hierarchical WBF for Multi-Scale YOLO–Transformer Fusion in Fisheye Road Object Detection**  
-> Ding-Jun Huang and Chun-Ming Tsai  
-> Department of Computer Science, University of Taipei, Taipei, Taiwan
+> **Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection**  
+> Chun-Ming Tsai, Ding-Jun Huang, Jun-Wei Hsieh, and Ming-Ching Chang  
+>  
+> 1. Department of Computer Science, University of Taipei, Taipei 10048, Taiwan  
+> 2. College of Artificial Intelligence and Green Energy, National Yang Ming Chiao Tung University, Tainan 71150, Taiwan  
+> 3. Department of Computer Science, University at Albany, State University of New York, NY 12222, USA  
+>  
+> Contact: `cmtsai@go.utaipei.edu.tw`, `g11316019@go.utaipei.edu.tw`, `jwhsieh@nycu.edu.tw`, `mchang2@albany.edu`
 
 ## Highlights
 
@@ -27,7 +32,7 @@ Companion artifact repository for a manuscript prepared for the **AI City Challe
   >
 </p>
 
-**Figure 1. Role-separated hierarchical WBF pipeline.**  
+**Figure 1. Original manuscript flowchart of the role-separated hierarchical WBF pipeline.**  
 The Level-II block shows the normalized equal-weight ratio `1:1:1`.
 The retained configuration stores the equivalent common-scaled ratio
 `9:9:9`; both express the same relative branch weighting.
@@ -86,25 +91,40 @@ Maximum detections per image: 300
 
 ## Official Result Progression
 
-| Method | F1 | AP50–95 | AP50 | AP_S | AP_M | AP_L |
+| Configuration stage | F1 | AP50–95 | AP50 | AP_S | AP_M | AP_L |
 |---|---:|---:|---:|---:|---:|---:|
-| Three-YOLO equal-weight fusion, without Day/Night thresholds | 0.5719 | 0.6360 | 0.8739 | 0.4983 | 0.7426 | 0.6268 |
-| Three-YOLO main branch + Day/Night scene-specific class-wise thresholds | 0.6377 | 0.6033 | 0.8080 | 0.4531 | 0.7284 | 0.6203 |
-| Original heterogeneous baseline | 0.6562 | 0.6050 | 0.8060 | 0.4532 | 0.7325 | 0.6196 |
-| Multi-scale YOLO | 0.6596 | 0.6123 | 0.8170 | 0.4665 | 0.7362 | 0.6214 |
-| Final MSDNL | **0.6604** | **0.6147** | **0.8220** | **0.4709** | **0.7378** | **0.6214** |
+| Historical Raw Equal-Weight WBF† | 0.5719 | 0.6360 | 0.8739 | 0.4983 | 0.7426 | 0.6268 |
+| Historical Day/Night Thresholding† | 0.6377 | 0.6033 | 0.8080 | 0.4531 | 0.7284 | 0.6203 |
+| Best Recorded YOLO-Only Stage (IoU = 0.6575) | 0.6425 | — | — | — | — | — |
+| Selected YOLO–Transformer Setting | 0.6562 | 0.6050 | 0.8060 | 0.4532 | 0.7325 | 0.6196 |
+| + Same-Model Multi-Scale YOLO | 0.6596 | 0.6123 | 0.8170 | 0.4665 | 0.7362 | 0.6214 |
+| + Final Scene-Specific Thresholding | **0.6604** | **0.6147** | **0.8220** | **0.4709** | **0.7378** | **0.6214** |
 
-The official F1 progression is:
+† Historical diagnostic stages from early pipeline prototyping. The exact
+historical threshold vector associated with the 0.6377 row was not retained.
+
+The manuscript F1 progression is:
 
 ```text
-0.5719 → 0.6377 → 0.6562 → 0.6596 → 0.6604
+0.5719 → 0.6377 → 0.6425 → 0.6562 → 0.6596 → 0.6604
+```
+
+The complete Multi-Scale YOLO record is:
+
+```text
+F1      = 0.6596
+AP50–95 = 0.6123
+AP50    = 0.8170
+AP_S    = 0.4665
+AP_M    = 0.7362
+AP_L    = 0.6214
 ```
 
 All values were returned by the official AI City Challenge evaluation
 platform under the same 1,000-image FishEye1K_eval submission protocol.
-The complete tabular record is stored in
-[`results/official_metrics.csv`](results/official_metrics.csv), with additional
-method-stage notes in
+The machine-readable record is stored in
+[`results/official_metrics.csv`](results/official_metrics.csv), with
+manuscript-stage notes in
 [`docs/RESULTS_PROGRESSION.md`](docs/RESULTS_PROGRESSION.md).
 
 ## Five-Minute Artifact Check
@@ -163,6 +183,8 @@ See [`docs/WBF_REPRODUCIBILITY.md`](docs/WBF_REPRODUCIBILITY.md) and [`docs/RELE
 
 See [`checkpoints/README.md`](checkpoints/README.md), [`docs/DFINE_THREE_STAGE.md`](docs/DFINE_THREE_STAGE.md), and [`docs/DEIMV2.md`](docs/DEIMV2.md).
 
+Training-data and annotation availability is documented in [`docs/DATA_AND_ANNOTATION_STATUS.md`](docs/DATA_AND_ANNOTATION_STATUS.md).
+
 ## Repository Layout
 
 ```text
@@ -188,6 +210,15 @@ See [`checkpoints/README.md`](checkpoints/README.md), [`docs/DFINE_THREE_STAGE.m
 
 Citation metadata is provided in [`CITATION.cff`](CITATION.cff).
 
-## Third-Party and Reuse Notice
+Exact title, author order, affiliations, and verified ORCID records are documented in [`docs/MANUSCRIPT_METADATA.md`](docs/MANUSCRIPT_METADATA.md).
 
-This repository does not apply one blanket license to all files. Upstream licenses remain applicable to upstream-derived code, configurations, and dependencies. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), [`docs/LICENSING_AND_REUSE.md`](docs/LICENSING_AND_REUSE.md), and [`third_party/README.md`](third_party/README.md).
+## License and Third-Party Notice
+
+Original project-specific code and documentation are released under
+[`AGPL-3.0`](LICENSE).
+
+Detector-specific files, configurations, and dependencies associated with
+YOLOR, YOLOv10, YOLOv13, DEIMv2, D-FINE, and UT-T1 remain subject to their
+upstream terms. See [`NOTICE`](NOTICE),
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), and
+[`third_party/README.md`](third_party/README.md).

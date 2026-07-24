@@ -1,26 +1,33 @@
 # Licensing and Reuse
 
-## Repository-Level Position
+## Original Project Files
 
-The repository contains:
+Original project-specific code and documentation are released under the
+GNU Affero General Public License version 3.0. See the root `LICENSE` file.
 
-1. original experiment-specific utilities and documentation;
-2. adapted inference/configuration files associated with upstream projects;
-3. generated prediction JSON artifacts;
-4. checkpoint provenance records without bundled checkpoint binaries.
+## Third-Party Materials
 
-One repository-wide license is intentionally not asserted over all files because upstream-derived materials remain governed by their corresponding source terms.
+Detector-specific wrappers, adapted configurations, upstream dependencies,
+and checkpoint provenance remain subject to the corresponding upstream
+licenses and checkpoint terms. The root AGPL-3.0 license does not relicense
+third-party checkpoints.
 
-## Practical Reuse Guidance
+See:
 
-- Review `third_party/README.md` before reusing detector-specific code or configurations.
-- Preserve copyright, attribution, notice, and source-disclosure obligations required by the applicable upstream license.
-- Do not assume that a model checkpoint has the same redistribution terms as its source code.
-- Prediction JSON files contain generated model outputs and no hidden ground-truth annotations.
-- Consult institutional or legal guidance when redistribution rights are uncertain.
+```text
+NOTICE
+THIRD_PARTY_NOTICES.md
+third_party/README.md
+```
 
-## Why There Is No Root `LICENSE` File
+## Prediction Artifacts
 
-A generic root license could incorrectly imply that every upstream-derived file is relicensed under one term. Instead, this repository provides explicit third-party notices and file provenance.
+Prediction JSON files contain generated model outputs and no hidden
+ground-truth annotations.
 
-The absence of a root `LICENSE` file is deliberate and replaces the previous unfinished `LICENSE_SELECTION_REQUIRED.md` page.
+## Redistribution Checklist
+
+- preserve upstream notices;
+- document modified third-party files;
+- verify checkpoint redistribution terms;
+- do not assume source-code and checkpoint licenses are identical.
