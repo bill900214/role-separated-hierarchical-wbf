@@ -86,17 +86,80 @@ def compare_json(expected: Path, actual: Path) -> None:
 
 
 def check_manuscript_alignment(root: Path) -> None:
-    citation = yaml.safe_load((root / "CITATION.cff").read_text(encoding="utf-8"))
-    if citation["title"] != 'Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection':
+    expected_title = (
+        "Role-Separated Hierarchical Fusion for Multi-Scale "
+        "YOLO–Transformer Fisheye Object Detection"
+    )
+    expected_authors = [
+        ("Tsai", "Chun-Ming"),
+        ("Huang", "Ding-Jun"),
+        ("Hsieh", "Jun-Wei"),
+        ("Chang", "Ming-Ching"),
+    ]
+    expected_orcids = {
+        ("Tsai", "Chun-Ming"): "https://orcid.org/0000-0002-9160-3899",
+        ("Huang", "Ding-Jun"): "https://orcid.org/0009-0001-8171-9062",
+    }
+
+    citation = yaml.safe_load(
+        (root / "CITATION.cff").read_text(encoding="utf-8")
+    )
+    if citation.get("title") != expected_title:
         raise ValueError("CITATION title does not match the manuscript.")
-    expected = [("Tsai", "Chun-Ming"), ("Huang", "Ding-Jun"), ("Hsieh", "Jun-Wei"), ("Chang", "Ming-Ching")]
-    actual = [(x["family-names"], x["given-names"]) for x in citation["authors"]]
-    if actual != expected:
-        raise ValueError(f"CITATION author order mismatch: {actual}")
+
+    citation_authors = citation.get("authors", [])
+    actual_authors = [
+        (author.get("family-names"), author.get("given-names"))
+        for author in citation_authors
+    ]
+    if actual_authors != expected_authors:
+        raise ValueError(
+            f"CITATION author order mismatch: {actual_authors}"
+        )
+
+    for author in citation_authors:
+        identity = (author.get("family-names"), author.get("given-names"))
+        actual_orcid = author.get("orcid")
+        expected_orcid = expected_orcids.get(identity)
+        if actual_orcid != expected_orcid:
+            raise ValueError(
+                f"Unexpected ORCID metadata for {identity}: {actual_orcid!r}"
+            )
 
     readme = (root / "README.md").read_text(encoding="utf-8")
-    if 'Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection' not in readme or 'Chun-Ming Tsai, Ding-Jun Huang, Jun-Wei Hsieh, and Ming-Ching Chang' not in readme:
-        raise ValueError("README title/authors do not match the manuscript.")
+    if expected_title not in readme:
+        raise ValueError("README title does not match the manuscript.")
+
+    for family_name, given_name in expected_authors:
+        display_name = f"{given_name} {family_name}"
+        if display_name not in readme:
+            raise ValueError(f"README is missing author: {display_name}")
+
+    required_orcids = [
+        "0000-0002-9160-3899",
+        "0009-0001-8171-9062",
+    ]
+    for orcid in required_orcids:
+        if orcid not in readme:
+            raise ValueError(f"README is missing ORCID: {orcid}")
+
+    metadata_paths = [
+        root / "README.md",
+        root / "CITATION.cff",
+        root / "docs/AUTHOR_METADATA.md",
+    ]
+    combined_metadata = "\n".join(
+        path.read_text(encoding="utf-8") for path in metadata_paths
+    )
+    if "Chun-Ming Tsai" not in combined_metadata:
+        raise ValueError("The corrected Chun-Ming Tsai spelling is missing.")
+
+    for author in citation_authors[2:]:
+        if "orcid" in author:
+            raise ValueError(
+                "ORCID metadata must be omitted for authors without a "
+                "verified identifier."
+            )
 
 
 def main() -> None:
