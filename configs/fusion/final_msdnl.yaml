@@ -41,8 +41,8 @@ level2:
   - 1.0
   - 1.0
   - 1.0
-  weight_scale_note: The figure reports the normalized ratio 1:1:1; the retained implementation
-    stores the equivalent common-scaled weights 9:9:9.
+  weight_scale_note: The manuscript reports normalized relative weights 1:1:1. The
+    archived experiment configuration records the common-scaled vector 9:9:9.
 day_night_threshold:
   night_prefix: '293'
   day:

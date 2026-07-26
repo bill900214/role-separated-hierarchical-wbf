@@ -1,27 +1,17 @@
 # Experiment Configuration Files
 
-Only the configuration dependency chains used by the reported experiments are retained.
-
 ## Fusion
 
-```text
-fusion/final_msdnl.yaml
-```
+`fusion/final_msdnl.yaml` records the final class order, Level-I/II/III WBF
+parameters, Day/Night thresholds, final confidence cutoff, and top-k limit.
 
-## D-FINE-L Progressive Fine-Tuning
+## D-FINE-L
 
-```text
-transformer/dfine/dfine/custom/objects365/dfine_hgnetv2_l_fisheye_1280.yml
-transformer/dfine/dfine/custom/objects365/dfine_hgnetv2_l_fisheye_1440_v1.yml
-transformer/dfine/dfine/custom/objects365/dfine_hgnetv2_l_fisheye_1536_v1.yml
-```
+The three progressive fine-tuning configurations are provided for 1280, 1440,
+and 1536 resolutions together with their required include files.
 
-Their required dataset, runtime, dataloader, optimizer, and model include files are retained in the same relative structure.
+## DEIMv2-S
 
-## DEIMv2-DINOv3-S-832
-
-```text
-transformer/deimv2/deimv2/deimv2_dinov3_s_fisheye.yml
-```
-
-The DEIMv2-S-960 branch is released as prediction-only because the original checkpoint and exact 960 configuration were not retained in the collected archive.
+The available DEIMv2-S-832 configuration and its include chain are provided.
+The DEIMv2-S-960 branch is represented by the actual prediction JSON used in
+the final fusion; a checkpoint-level 960 configuration is not released.

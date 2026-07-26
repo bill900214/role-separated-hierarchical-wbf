@@ -1,8 +1,8 @@
-# Evaluation Results
+# Evaluation-Server Results
 
-`official_metrics.csv` contains the main progressive results reported in
-the paper.
+`official_metrics.csv` records the progressive metrics returned by the
+FishEye1K_eval evaluation server.
 
-The metrics were returned by the FishEye1K_eval evaluation server. Hidden
-ground-truth annotations are not included, so these metrics cannot be
-recalculated locally.
+The experiments are post-challenge and target-domain transductive. Hidden
+server-side annotations are not included, so the metrics cannot be recomputed
+locally from ground truth.

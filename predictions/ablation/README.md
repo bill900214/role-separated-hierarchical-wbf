@@ -1,7 +1,7 @@
 # Auxiliary-Branch Ablation Predictions
 
-The retained files document progressive addition of Transformer auxiliary
-sources:
+These files document progressive Transformer auxiliary combinations used in
+ablation analysis:
 
 - `A5_SEC_DEIM832.json`
 - `13_SEC_D832_D960.json`

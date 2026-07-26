@@ -6,8 +6,8 @@ IMPORTANT:
     The original reported Level-II and Level-III experiments used
     `mmdet.models.utils.weighted_boxes_fusion`.
 
-    This file is a standalone approximation retained for Level-I inspection
-    and implementation comparison. It is NOT claimed to reproduce the
+    This file is a standalone approximation for Level-I inspection and
+    implementation comparison. It is NOT claimed to reproduce the
     original MMDetection Level-II or Level-III outputs bit-for-bit.
 """
 

@@ -1,10 +1,9 @@
 Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection
-Copyright (C) 2026 Chun-Ming Tsai, Ding-Jun Huang,
-Jun-Wei Hsieh, and Ming-Ching Chang
+Copyright (C) 2026 Chun-Ming Tsai, Ding-Jun Huang, Jun-Wei Hsieh, and Ming-Ching Chang
 
 Original project-specific code and documentation in this repository are
 released under the GNU Affero General Public License version 3.0.
 
 Third-party-derived files and dependencies remain subject to their
-corresponding upstream licenses. Model checkpoint binaries and dataset
-files are not relicensed or redistributed by this repository.
+corresponding upstream licenses. Model checkpoint binaries and dataset files
+are not relicensed or redistributed by this repository.

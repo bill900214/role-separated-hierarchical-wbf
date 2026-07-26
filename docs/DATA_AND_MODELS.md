@@ -1,38 +1,38 @@
 # Data and Model Availability
 
-## Publicly Released Here
+## Experimental Data
 
-- experiment-specific source code;
+The Transformer fine-tuning pool contains 17,629 images derived from:
+
+- the 5,288-image FishEye8K training split;
+- class-mapped VisDrone samples;
+- the public FishEye1K_eval pseudo-label package described in the paper.
+
+The 2,712-image FishEye8K validation split is used for training monitoring and
+checkpoint selection. No manual annotation of challenge test imagery was
+performed, and server-side ground-truth annotations were not accessed.
+
+## Included in This Repository
+
+- project-specific source code;
 - inference and post-processing wrappers;
-- final fusion configuration;
-- retained D-FINE and DEIMv2 configuration files;
-- prediction JSON files used in the reported fusion pipeline;
-- official evaluation metrics and checksums.
+- fusion and threshold configuration files;
+- D-FINE and DEIMv2 configuration files available from the experiments;
+- prediction JSON files used by the reported fusion pipeline;
+- evaluation-server metrics and checksums.
 
 ## Not Redistributed
 
-The following items are not included because they are external assets,
-restricted evaluation material, or unavailable checkpoint binaries:
-
-- FishEye8K and FishEye1K_eval images;
+- FishEye8K, FishEye1K_eval, or VisDrone images and annotations;
 - hidden FishEye1K_eval annotations;
-- VisDrone images and annotations;
-- the public pseudo-label package used during Transformer fine-tuning;
+- pseudo-label packages;
 - public UT-T1 checkpoint binaries;
 - D-FINE and DEIMv2 checkpoint binaries.
 
-Users should obtain datasets and upstream model weights from their original
-providers and comply with the corresponding licenses and terms.
+Datasets and upstream weights must be obtained from their original providers
+under the corresponding terms.
 
 ## Prediction Artifacts
 
-Prediction JSON files contain only:
-
-```text
-image_id
-category_id
-bbox = [x, y, width, height]
-score
-```
-
-They do not contain server-side ground truth.
+Prediction JSON files contain `image_id`, `category_id`, `bbox`, and `score`.
+They do not contain hidden ground-truth annotations.

@@ -84,6 +84,21 @@ def compare_json(expected: Path, actual: Path) -> None:
         )
 
 
+
+def check_manuscript_alignment(root: Path) -> None:
+    citation = yaml.safe_load((root / "CITATION.cff").read_text(encoding="utf-8"))
+    if citation["title"] != 'Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection':
+        raise ValueError("CITATION title does not match the manuscript.")
+    expected = [("Tsai", "Chun-Ming"), ("Huang", "Ding-Jun"), ("Hsieh", "Jun-Wei"), ("Chang", "Ming-Ching")]
+    actual = [(x["family-names"], x["given-names"]) for x in citation["authors"]]
+    if actual != expected:
+        raise ValueError(f"CITATION author order mismatch: {actual}")
+
+    readme = (root / "README.md").read_text(encoding="utf-8")
+    if 'Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection' not in readme or 'Chun-Ming Tsai, Ding-Jun Huang, Jun-Wei Hsieh, and Ming-Ching Chang' not in readme:
+        raise ValueError("README title/authors do not match the manuscript.")
+
+
 def main() -> None:
     root = Path(__file__).resolve().parents[2]
     print(f"Repository: {root}")
@@ -159,6 +174,9 @@ def main() -> None:
     if len(rows) != 6 or rows[-1]["f1"] != "0.6604":
         raise ValueError("Official result table mismatch.")
     print("Result table: PASS")
+
+    check_manuscript_alignment(root)
+    print("Manuscript title and authors: PASS")
 
     flowchart = root / "docs/assets/role_separated_hierarchical_wbf_pipeline.png"
     if digest(flowchart) != EXPECTED_FLOWCHART_SHA256:
