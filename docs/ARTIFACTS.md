@@ -1,4 +1,4 @@
-# Artifact Manifest
+# Prediction Artifact Manifest
 
 | File | Detections | Images | SHA-256 |
 |---|---:|---:|---|
@@ -7,13 +7,16 @@
 | `predictions/yolo_inputs/yolov10x_second_c050_i065_s1536_official.json` | 41,970 | 1,000 | `18eddbaf3f0a338d3d6c3358f0986e873386614df04fe1e2ce10bb710ed4f409` |
 | `predictions/yolo_inputs/yolov13l_second_c0495_i045_official.json` | 35,302 | 1,000 | `ba7c42ec8fd8a65c8bf2119c51d429bd22ab29311b769ffb25ca0f0351d0a8b6` |
 | `predictions/yolo_inputs/yolov13l_second_c0495_i045_s1536_official.json` | 35,694 | 1,000 | `c18b2db312659ea8e3844dad82bae50432e1ae236b8e17cd3e3f3f65958705d6` |
+| `predictions/transformer_inputs/deimv2_832_conf005_iou070_official.json` | 131,372 | 1,000 | `e959ba790e918ee5d5e45d831642aac1ea96be6b60fcb5e717278eb265dd577f` |
+| `predictions/transformer_inputs/submission_deimv2_960_conf052_iou045.json` | 30,460 | 1,000 | `2dc9f60a3c943a3710ddf790baae6e5380a70859512db8c0db97aea0310002bf` |
+| `predictions/transformer_inputs/dfine1536_last_conf005_iou070_official.json` | 211,513 | 1,000 | `aae9a8f15ae7a071f7d561c1dac847399daa2390edef8476a51d3b27b9cf75c0` |
 | `predictions/intermediate/Y10_MS_1280_1536.json` | 43,820 | 1,000 | `6811e40491e90626dfbe325a0ce526494911784902d224dccfb32f546e64d867` |
 | `predictions/intermediate/Y13_MS_1280_1536.json` | 36,952 | 1,000 | `a9000867bb281017c29b37de8a337904c125ea27cd45727347b52fc89be04a51` |
 | `predictions/intermediate/SEC_MS3_Y10Y13MS_raw.json` | 52,310 | 1,000 | `bc64740fe82335a74e9e62753d6b7d61699aca5976651f7fa1839374333dc79a` |
 | `predictions/intermediate/MSDN_L_SEC_MS3_DN.json` | 35,352 | 1,000 | `b0f5d122ec8af134d328540a61ffd19f1582a092c58fc5b16f8826410f0106ff` |
-| `predictions/transformer_inputs/deimv2_832_conf005_iou070_official.json` | 131,372 | 1,000 | `e959ba790e918ee5d5e45d831642aac1ea96be6b60fcb5e717278eb265dd577f` |
-| `predictions/transformer_inputs/submission_deimv2_960_conf052_iou045.json` | 30,460 | 1,000 | `2dc9f60a3c943a3710ddf790baae6e5380a70859512db8c0db97aea0310002bf` |
-| `predictions/transformer_inputs/dfine1536_last_conf005_iou070_official.json` | 211,513 | 1,000 | `aae9a8f15ae7a071f7d561c1dac847399daa2390edef8476a51d3b27b9cf75c0` |
+| `predictions/ablation/A5_SEC_DEIM832.json` | 32,930 | 1,000 | `4cf1feffd5d8be384e4ee10d1f9e28fe23ffd8ec6112aceabe79e056be75816f` |
+| `predictions/ablation/13_SEC_D832_D960.json` | 32,936 | 1,000 | `d2ceaf56c40bf5cb767e79d2d7f60c777e93c4c088bff50ee5704cf460606f7d` |
+| `predictions/ablation/14_SEC_D832_D960_DF1536.json` | 32,974 | 1,000 | `9ac48f19be2226b64c616879c91db44c9ff6f093cc9a3a4caacb03eff2d4480d` |
 | `predictions/final/FINAL_MSDN_L_EC2.json` | 33,834 | 1,000 | `2d1e30d7da07662d7284585d80ed720e98c1896d843a3bfe08629e1db6b7a7a7` |
 
-All files contain model predictions only and do not contain hidden ground-truth annotations.
+All files contain model predictions only and no hidden annotations.

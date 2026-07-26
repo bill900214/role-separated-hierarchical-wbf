@@ -1,31 +1,13 @@
-# Datasets and private data
-datasets/
-data/
-FishEye8K/
-FishEye1K_eval/
-VisDrone/
-*.env
-.env
-.env.*
-
-# Model weights and binary artifacts
-*.pt
-*.pth
-*.ckpt
-*.onnx
-*.engine
-*.trt
-
-# Training outputs
-runs/
-wandb/
-outputs/
-output/
-logs/
-tensorboard/
+# Python
 __pycache__/
 *.py[cod]
-.ipynb_checkpoints/
+.pytest_cache/
+
+# Environments
+.venv/
+venv/
+env/
+.env
 
 # IDE / OS
 .vscode/
@@ -33,18 +15,16 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Credentials
-*.pem
-*.key
-id_rsa
-id_ed25519
+# Local datasets and checkpoints
+data/
+datasets/
+weights/
+*.pt
+*.pth
+*.ckpt
 
-# Temporary archives
-*.tar
-*.tar.gz
-*.zip
-
-# Reproduced local artifacts
+# Local outputs
 reproduced/
-*_reproduced.json
-infer_txt/
+outputs/
+runs/
+logs/

@@ -5,7 +5,6 @@ Jun-Wei Hsieh, and Ming-Ching Chang
 Original project-specific code and documentation in this repository are
 released under the GNU Affero General Public License version 3.0.
 
-Files adapted from, or dependent on, third-party projects remain subject
-to their original licenses and notices. See THIRD_PARTY_NOTICES.md and
-third_party/README.md. No third-party checkpoint is relicensed by this
-repository.
+Third-party-derived files and dependencies remain subject to their
+corresponding upstream licenses. Model checkpoint binaries and dataset
+files are not relicensed or redistributed by this repository.

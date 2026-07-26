@@ -1,30 +1,25 @@
 cff-version: 1.2.0
-message: "If you use this repository, please cite the associated manuscript and this software artifact."
+message: "If you use this repository, please cite the associated paper and software artifact."
 title: "Role-Separated Hierarchical Fusion for Multi-Scale YOLO–Transformer Fisheye Object Detection"
 type: software
 authors:
   - family-names: "Tsai"
     given-names: "Chun-Ming"
     affiliation: "Department of Computer Science, University of Taipei"
-    email: "cmtsai@go.utaipei.edu.tw"
     orcid: "https://orcid.org/0000-0002-9160-3899"
   - family-names: "Huang"
     given-names: "Ding-Jun"
     affiliation: "Department of Computer Science, University of Taipei"
-    email: "g11316019@go.utaipei.edu.tw"
     orcid: "https://orcid.org/0009-0001-8171-9062"
   - family-names: "Hsieh"
     given-names: "Jun-Wei"
     affiliation: "College of Artificial Intelligence and Green Energy, National Yang Ming Chiao Tung University"
-    email: "jwhsieh@nycu.edu.tw"
   - family-names: "Chang"
     given-names: "Ming-Ching"
     affiliation: "Department of Computer Science, University at Albany, State University of New York"
-    email: "mchang2@albany.edu"
 version: 1.0.0
-date-released: 2026-07-24
 repository-code: "https://github.com/bill900214/role-separated-hierarchical-wbf"
-abstract: "Research artifacts for role-separated hierarchical fusion, same-model multi-scale WBF, scene-adaptive class-wise thresholding, and low-weight YOLO-Transformer integration for fisheye object detection."
+abstract: "Code, configurations, and prediction artifacts for role-separated hierarchical YOLO–Transformer fusion in fisheye object detection."
 keywords:
   - fisheye object detection
   - role-separated fusion
@@ -32,4 +27,3 @@ keywords:
   - multi-scale inference
   - YOLO
   - Transformer detector
-  - AI City Challenge

@@ -31,4 +31,4 @@ python "$PROJECT_ROOT/code/inference/dfine/infer_dfine_1536.py" \
   --iou 0.70 \
   --device cuda:0
 
-echo "DEIMv2-S-960 is prediction-only; no checkpoint-level command is provided."
+echo "DEIMv2-S-960 prediction JSON is included; its checkpoint is not part of this release."

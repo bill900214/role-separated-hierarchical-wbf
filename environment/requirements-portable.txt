@@ -1,4 +1,2 @@
-Pillow
-numpy
-opencv-python
-PyYAML
+Pillow>=9.0
+PyYAML>=6.0
